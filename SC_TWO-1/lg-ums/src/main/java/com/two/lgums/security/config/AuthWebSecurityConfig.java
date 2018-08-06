@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.two.core.security.authorize.AuthorizeConfigManager;
+import com.two.lgums.security.authorize.ArtAuthenticationSuccessHandler;
+import com.two.lgums.security.authorize.LoginSuccessHandler;
 
 /**
  * 功能描述: ${description}
@@ -22,6 +24,9 @@ public class AuthWebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthorizeConfigManager authorizeConfigManager;
     
+    @Autowired
+    ArtAuthenticationSuccessHandler artAuthenticationSuccessHandler;
+    
     @Bean
     protected BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -30,17 +35,23 @@ public class AuthWebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-		http.formLogin().loginPage("/login")
+		http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/", true).successHandler(loginSuccessHandler())
 		.loginProcessingUrl("/loginProcess")
                 .successForwardUrl("/loginSuccess")
                 .failureForwardUrl("/fail")
 		.and().authorizeRequests()
-		.antMatchers("/login","/loginProcess","/loginSuccess","/fail").permitAll()
+		.anyRequest().authenticated()
+		.antMatchers("/login","/loginProcess","/loginSuccess","/fail","/authentication/require","/").permitAll()
 		.and().csrf().disable().headers().frameOptions().disable();
         authorizeConfigManager.config(http.authorizeRequests());
     }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+    
+    /**登录成功处理器*/
+    private LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
     }
 }

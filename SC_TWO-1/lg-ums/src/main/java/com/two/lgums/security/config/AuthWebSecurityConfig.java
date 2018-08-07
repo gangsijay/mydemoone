@@ -35,13 +35,16 @@ public class AuthWebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-		http.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/", true).successHandler(loginSuccessHandler())
+		http.formLogin().loginPage("/login")
+//		.permitAll().defaultSuccessUrl("/", true).successHandler(loginSuccessHandler())
 		.loginProcessingUrl("/loginProcess")
                 .successForwardUrl("/loginSuccess")
                 .failureForwardUrl("/fail")
 		.and().authorizeRequests()
-		.anyRequest().authenticated()
+//		.anyRequest().authenticated()
 		.antMatchers("/login","/loginProcess","/loginSuccess","/fail","/authentication/require","/").permitAll()
+		.antMatchers("/me").hasAnyRole("ADMIN")
+		.antMatchers("/me").access("hasRole('ADMIN')")
 		.and().csrf().disable().headers().frameOptions().disable();
         authorizeConfigManager.config(http.authorizeRequests());
     }

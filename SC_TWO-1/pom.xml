@@ -71,5 +71,6 @@
     	<module>center-core</module>
     	<module>lg-test</module>
     	<module>lg-ums</module>
+    	<module>security</module>
     </modules>
 </project>

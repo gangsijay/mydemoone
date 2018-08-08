@@ -1,0 +1,6 @@
+cdrundle:
+  base:
+    oauth2:
+      jwtSigningKey: com.two
+      resourceid: rd_auth
+      accessTokenUri: http://localhost:8767/rdOauth/oauth/token

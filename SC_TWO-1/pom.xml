@@ -68,6 +68,7 @@
     	<module>eureka-server</module>
     	<module>config-server</module>
     	<module>oauth-server</module>
+    	<module>zuul-server</module>
     	<module>center-core</module>
     	<module>lg-test</module>
     	<module>lg-ums</module>

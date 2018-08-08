@@ -1,0 +1,33 @@
+zuul:
+  max:
+    host:
+      connections: 500
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 20000
+  routes:
+    rd-oauth2-server:
+      path: /site/auth/**
+      sensitiveHeaders:
+      serviceId: security
+      stripPrefix: true
+    mytest:
+      path: /site/test/**
+      serviceId: rdtest2
+      sensitiveHeaders:
+      stripPrefix: true
+  add-proxy-headers: true
+##timeout config
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+security:
+  basic:
+    enabled: false
+

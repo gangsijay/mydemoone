@@ -24,7 +24,7 @@ public class SysUserDaoImpl extends PostgreJdbcDao implements SysUserDao {
 		sql.append(" from lg_user u ");
 		sql.append(" LEFT JOIN lg_user_role sru on u.id= sru.sys_user_id ");
 		sql.append(" LEFT JOIN lg_role r on sru.sys_role_id=r.id ");
-		sql.append(" where u.name= ? ");
+		sql.append(" where u.username= ? ");
         try {
 			return this.queryForObject(sql.toString(), SysUser.class, username);
 		} catch (DaoException e) {
